@@ -27,10 +27,27 @@ model User {
   updatedAt     DateTime  @updatedAt
   sessions      Session[]
   accounts      Account[]
+  githubInstallation GithubInstallation?
 
   @@unique([email])
   @@map("user")
 }
+
+model GithubInstallation {
+  id             String   @id @default(cuid())
+  userId         String   @unique
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  installationId Int      @unique
+  //accountId      String //optional
+  accountLogin   String?
+  accountType    String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@map("github_installation")
+}
+
+
 
 model Session {
   id        String   @id
