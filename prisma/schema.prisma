@@ -47,7 +47,24 @@ model GithubInstallation {
   @@map("github_installation")
 }
 
+model PullRequest {
+  id             String   @id @default(cuid())
+  installationId Int      
+  repoFullName    String
+  prNumber       Int
+  title          String
+  authorLogin     String?
+  headSha        String
+  baseBranch     String
+  status         String
+  reviewComment String?
+  reviewedAt    DateTime?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
+  @@unique([repoFullName, prNumber])
+  @@map("pull_request")
+}
 
 model Session {
   id        String   @id
