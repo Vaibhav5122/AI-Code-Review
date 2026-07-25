@@ -1,5 +1,6 @@
 import { savePullRequest } from "@/features/reviews/server/save-pull-request";
 import { getGithubApp } from "../utils/github-app";
+import { inngest } from "@/features/inngest/client";
 
 const REVIWABLE_ACTIONS = ["opened", "reopened", "synchronize"];
 
