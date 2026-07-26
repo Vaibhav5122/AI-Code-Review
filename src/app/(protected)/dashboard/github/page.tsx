@@ -1,8 +1,7 @@
 import { requireAuth } from "@/features/auth/actions";
-import { DasboardHeader } from "@/features/dashboard/components/dashboard-header";
+import { DashboardHeader } from "@/features/dashboard/components/dashboard-header";
 import { GithubConnectCard } from "@/features/github/components/github-connect-cards";
 import { getGithubInstallationStatus } from "@/features/github/server/installation";
-import React from "react";
 
 export const metadata = {
   title: "Dashboard - GitHub App",
@@ -14,7 +13,7 @@ const DashboardGithubPage = async () => {
 
   return (
     <>
-      <DasboardHeader
+      <DashboardHeader
         title="GitHub App"
         description="Manage your GitHub integration settings."
       />
