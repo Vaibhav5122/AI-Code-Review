@@ -48,5 +48,14 @@ export async function handleGithubWebhook(request: Request) {
 
   const pullRequest = await savePullRequest(event);
 
+  if (pullRequest) {
+    await inngest.send({
+      name: "github/pr.received",
+      data: {
+        pullRequestId: pullRequest.id,
+      },
+    });
+  }
+
   return Response.json({ received: true });
 }
