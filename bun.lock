@@ -7,6 +7,7 @@
       "dependencies": {
         "@base-ui/react": "^1.6.0",
         "@openrouter/ai-sdk-provider": "^3.0.0",
+        "@pinecone-database/pinecone": "^8.1.0",
         "@prisma/adapter-pg": "^7.9.0",
         "@prisma/client": "^7.9.0",
         "@shadcn/react": "^0.2.1",
@@ -520,6 +521,8 @@
     "@opentelemetry/semantic-conventions": ["@opentelemetry/semantic-conventions@1.43.0", "", {}, "sha512-eSYWTm620tTk45EKSedaUL8MFYI8hW164hIXsgIHyxu3VobUB3fFCu5t0hQby6OoWRPsG1KkKUG2M5UadiLiVg=="],
 
     "@opentelemetry/sql-common": ["@opentelemetry/sql-common@0.42.0", "", { "dependencies": { "@opentelemetry/core": "^2.0.0" }, "peerDependencies": { "@opentelemetry/api": "^1.1.0" } }, "sha512-nwUwUU+8O8a4bnLqk6CodWeegGMEANgC94KTAhXcpGWLrW/2/hek/0ajNbjXnSOoNuCX+nteUPs46HFHhou9Xw=="],
+
+    "@pinecone-database/pinecone": ["@pinecone-database/pinecone@8.1.0", "", {}, "sha512-aSC0u1HqUzOFnqHy4fpw8RD2TQdwaT0nMiYpc07Y8qW4tK59LTO3jTqQIjH1L93c4/cn8rfJCQimXmbtsi2acA=="],
 
     "@pkgjs/parseargs": ["@pkgjs/parseargs@0.11.0", "", {}, "sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg=="],
 

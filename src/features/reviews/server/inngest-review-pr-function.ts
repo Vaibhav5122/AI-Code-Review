@@ -1,7 +1,7 @@
 import { inngest } from "@/features/inngest/client";
 import { prisma } from "@/lib/db";
 import { getPullRequestFiles } from "./pr-files";
-import { chunkPrFiles } from "../utils/chunk-codes";
+import { chunkPrFiles } from "../utils/chunk-code";
 import { generateReview } from "./generate-review";
 
 export const reviewPullRequest = inngest.createFunction(

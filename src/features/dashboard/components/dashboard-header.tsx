@@ -7,7 +7,7 @@ type DashboardHeaderProps = {
   title: string;
   description?: string;
 };
-export function DasboardHeader({ title, description }: DashboardHeaderProps) {
+export function DashboardHeader({ title, description }: DashboardHeaderProps) {
   return (
     <header className="flex h-14 shrink-0 items-center gap-2 border-b border-border px-4">
       <SidebarTrigger className={"-ml-1"} />
