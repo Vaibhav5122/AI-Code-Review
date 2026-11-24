@@ -1,7 +1,10 @@
 import { openrouter } from "@openrouter/ai-sdk-provider";
 import { generateText } from "ai";
 
-const REVIEW_MODEL = process.env.REVIEW_MODEL!; //"openrouter/free";
+const getReviewModel = () => {
+  const envModel = process.env.REVIEW_MODEL?.split("#")[0]?.trim();
+  return envModel || "openrouter/free";
+};
 
 const SYSTEM_PROMPT = `
 You are a senior software engineer performing an automated pull request review.
@@ -796,9 +799,12 @@ export async function generateReview(input: ReviewInput) {
     input.repoContextSnippets || [],
   );
 
+  const modelName = getReviewModel();
+
   const { text } = await generateText({
-    model: openrouter(REVIEW_MODEL),
+    model: openrouter(modelName),
     system: SYSTEM_PROMPT,
+    abortSignal: AbortSignal.timeout(50_000), // Abort before Vercel maxDuration terminates
     prompt: `Repository: ${input.repoFullName}
   Pull request title: ${input.title}
   
