@@ -18,6 +18,7 @@ import { DashboardRepo } from "../lib/types";
 import { statusBadge } from "../lib/status-style";
 import { LockIcon, LockKeyholeOpenIcon, StarIcon } from "lucide-react";
 import SyncRepoButton from "@/features/repo-sync/components/sync-repo-button";
+import { toast } from "sonner";
 
 type Filter = "all" | "public" | "private";
 
@@ -25,6 +26,7 @@ export function RepoList() {
   const [filter, setFilter] = useState<Filter>("all");
   const [search, setSearch] = useState("");
   const loadMoreRef = useRef<HTMLDivElement>(null);
+  const prevSyncingRef = useRef<Record<string, boolean>>({});
 
   const {
     data,
@@ -33,7 +35,37 @@ export function RepoList() {
     isFetchingNextPage,
     isPending,
     isError,
-  } = useInfiniteQuery(githubReposInfiniteQuery);
+  } = useInfiniteQuery({
+    ...githubReposInfiniteQuery,
+    refetchInterval: (query) => {
+      const queryData = query.state.data as
+        | { pages: { repos: { syncStatus: string | null }[] }[] }
+        | undefined;
+      const allRepos = queryData?.pages.flatMap((page) => page.repos) ?? [];
+      const isAnySyncing = allRepos.some(
+        (repo) =>
+          repo.syncStatus === "pending" || repo.syncStatus === "syncing",
+      );
+      return isAnySyncing ? 3000 : false;
+    },
+  });
+
+  useEffect(() => {
+    if (!data) return;
+    const allRepos = data.pages.flatMap((page) => page.repos);
+    allRepos.forEach((repo) => {
+      const wasSyncing = prevSyncingRef.current[repo.fullName];
+      const isNowSyncing =
+        repo.syncStatus === "pending" || repo.syncStatus === "syncing";
+
+      if (wasSyncing && !isNowSyncing && repo.syncStatus === "synced") {
+        toast.success(`Repository ${repo.fullName} synced successfully!`);
+      } else if (wasSyncing && !isNowSyncing && repo.syncStatus === "failed") {
+        toast.error(`Sync failed for ${repo.fullName}. Please try again.`);
+      }
+      prevSyncingRef.current[repo.fullName] = isNowSyncing;
+    });
+  }, [data]);
 
   const loading = isPending && !data;
 

@@ -6,6 +6,7 @@ import { syncRepoCodebase } from "../actions/repo-sync";
 import { Button } from "@/components/ui/button";
 import { RepoSyncStatus } from "../types";
 import { toast } from "sonner";
+import { RefreshCw } from "lucide-react";
 
 type SyncRepoButtonProps = {
   repoFullName: string;
@@ -33,6 +34,10 @@ function getButtonLabel(
     return "Re-sync";
   }
 
+  if (status === "failed") {
+    return "Retry Sync";
+  }
+
   return "Sync";
 }
 
@@ -47,10 +52,12 @@ const SyncRepoButton = ({
     mutationFn: () => syncRepoCodebase(repoFullName, branch),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: githubRepoKeys.all });
-      toast.success(`Repo ${repoFullName} synced successfully`);
+      toast.info(
+        `Sync started for ${repoFullName}. Indexing codebase in background…`,
+      );
     },
     onError: (error) => {
-      toast.error(`Failed to sync repo ${repoFullName}: ${error.message}`);
+      toast.error(`Failed to start sync: ${error.message}`);
     },
   });
 
@@ -59,10 +66,11 @@ const SyncRepoButton = ({
   return (
     <Button
       size="sm"
-      variant="outline"
+      variant={syncStatus === "failed" ? "destructive" : "outline"}
       disabled={syncing}
       onClick={() => syncRepo.mutate()}
     >
+      {syncing && <RefreshCw className="mr-1.5 h-3.5 w-3.5 animate-spin" />}
       {getButtonLabel(syncStatus, syncRepo.isPending)}
     </Button>
   );

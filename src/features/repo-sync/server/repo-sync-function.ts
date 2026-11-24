@@ -10,63 +10,80 @@ import {
 
 export const syncRepoCodebaseFunction = inngest.createFunction(
   {
-    id: "sync-repo-codebas",
+    id: "sync-repo-codebase",
     triggers: { event: "repo/sync.requested" },
     onFailure: async ({ event }) => {
-      await prisma.repoSync.update({
-        where: { id: event.data.event.data.repoSyncId },
-        data: { status: "failed" },
-      });
+      const repoSyncId = (event?.data as any)?.event?.data?.repoSyncId;
+      if (repoSyncId) {
+        await prisma.repoSync
+          .update({
+            where: { id: repoSyncId },
+            data: { status: "failed" },
+          })
+          .catch((err) =>
+            console.error("Failed to update status on failure:", err),
+          );
+      }
     },
   },
 
   async ({ event, step }) => {
     const repoSyncId = event.data.repoSyncId;
 
-    const repoSync = await step.run("mark-syncing", async () => {
-      return prisma.repoSync.update({
-        where: { id: repoSyncId },
-        data: { status: "syncing" },
+    try {
+      const repoSync = await step.run("mark-syncing", async () => {
+        return prisma.repoSync.update({
+          where: { id: repoSyncId },
+          data: { status: "syncing" },
+        });
       });
-    });
 
-    const chunks = await step.run("fetch-and-chunk-codebase", async () => {
-      const files = await getRepoFiles(
-        repoSync.installationId,
-        repoSync.repoFullName,
-        repoSync.branch,
-      );
+      const chunks = await step.run("fetch-and-chunk-codebase", async () => {
+        const files = await getRepoFiles(
+          repoSync.installationId,
+          repoSync.repoFullName,
+          repoSync.branch,
+        );
 
-      return chunkRepoFiles(files);
-    });
-
-    const namespace = buildRepoNamespace(repoSync.repoFullName);
-
-    if (repoSync.syncedAt) {
-      await step.run("delete-old-vectors", async () => {
-        await deleteRepoNamespace(namespace);
+        return chunkRepoFiles(files);
       });
+
+      const namespace = buildRepoNamespace(repoSync.repoFullName);
+
+      if (repoSync.syncedAt) {
+        await step.run("delete-old-vectors", async () => {
+          await deleteRepoNamespace(namespace);
+        });
+      }
+
+      await step.run("save-vectors-to-pinecone", async () => {
+        await saveRepoChunks(namespace, chunks);
+      });
+
+      await step.run("mark-synced", async () => {
+        await prisma.repoSync.update({
+          where: { id: repoSyncId },
+          data: {
+            status: "synced",
+            syncedAt: new Date(),
+            chunkCount: chunks.length,
+          },
+        });
+      });
+
+      return {
+        repoSyncId,
+        status: "synced",
+        chunkCount: chunks.length,
+      };
+    } catch (error) {
+      await prisma.repoSync
+        .update({
+          where: { id: repoSyncId },
+          data: { status: "failed" },
+        })
+        .catch(() => {});
+      throw error;
     }
-
-    await step.run("save-vectors-to-pinecone", async () => {
-      await saveRepoChunks(namespace, chunks);
-    });
-
-    await step.run("mark-synced", async () => {
-      await prisma.repoSync.update({
-        where: { id: repoSyncId },
-        data: {
-          status: "synced",
-          syncedAt: new Date(),
-          chunkCount: chunks.length,
-        },
-      });
-    });
-
-    return {
-      repoSyncId,
-      status: "synced",
-      chunkCount: chunks.length,
-    };
   },
 );

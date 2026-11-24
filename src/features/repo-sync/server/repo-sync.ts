@@ -212,13 +212,36 @@ export async function saveRepoChunks(namespace: string, chunks: CodeChunk[]) {
 export async function getRepoSyncStatuses(repoFullNames: string[]) {
   const syncs = await prisma.repoSync.findMany({
     where: { repoFullName: { in: repoFullNames } },
-    select: { repoFullName: true, status: true },
+    select: { id: true, repoFullName: true, status: true, updatedAt: true },
   });
 
   const statusByRepo: Record<string, string> = {};
+  const staleSyncIds: string[] = [];
+  const STALE_THRESHOLD_MS = 5 * 60 * 1000; // 5 minutes
 
+  const now = Date.now();
   for (const sync of syncs) {
-    statusByRepo[sync.repoFullName] = sync.status;
+    if (
+      (sync.status === "pending" || sync.status === "syncing") &&
+      now - new Date(sync.updatedAt).getTime() > STALE_THRESHOLD_MS
+    ) {
+      statusByRepo[sync.repoFullName] = "failed";
+      staleSyncIds.push(sync.id);
+    } else {
+      statusByRepo[sync.repoFullName] = sync.status;
+    }
+  }
+
+  if (staleSyncIds.length > 0) {
+    // Self-heal stale/zombie syncs in background so button is not permanently locked
+    prisma.repoSync
+      .updateMany({
+        where: { id: { in: staleSyncIds } },
+        data: { status: "failed" },
+      })
+      .catch((err) =>
+        console.error("Failed to self-heal stale repo syncs:", err),
+      );
   }
 
   return statusByRepo;
