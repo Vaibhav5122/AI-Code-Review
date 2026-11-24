@@ -1,0 +1,67 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Left Gradient: Emerald to Teal -->
+    <linearGradient id="diff-left" x1="64" y1="112" x2="220" y2="400" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#10B981" />
+      <stop offset="60%" stop-color="#14B8A6" />
+      <stop offset="100%" stop-color="#06B6D4" />
+    </linearGradient>
+
+    <!-- Right Gradient: Cyan to Indigo -->
+    <linearGradient id="diff-right" x1="448" y1="112" x2="292" y2="400" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#06B6D4" />
+      <stop offset="40%" stop-color="#3B82F6" />
+      <stop offset="100%" stop-color="#6366F1" />
+    </linearGradient>
+
+    <!-- Center Spark Gradient: Electric Emerald-Cyan -->
+    <linearGradient id="mind-spark" x1="216" y1="140" x2="296" y2="372" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#34D399" />
+      <stop offset="50%" stop-color="#38BDF8" />
+      <stop offset="100%" stop-color="#818CF8" />
+    </linearGradient>
+
+    <radialGradient id="core-glow" cx="256" cy="256" r="140" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.4" />
+      <stop offset="60%" stop-color="#10B981" stop-opacity="0.15" />
+      <stop offset="100%" stop-color="#06B6D4" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <!-- Ambient Glow behind AI Core -->
+  <circle cx="256" cy="256" r="140" fill="url(#core-glow)" />
+
+  <!-- Left Code Diff Chevron '<' -->
+  <path d="M196 128L88 236C76 248 76 264 88 276L196 384" 
+        stroke="url(#diff-left)" 
+        stroke-width="46" 
+        stroke-linecap="round" 
+        stroke-linejoin="round" />
+
+  <!-- Right Code Diff Chevron '>' -->
+  <path d="M316 128L424 236C436 248 436 264 424 276L316 384" 
+        stroke="url(#diff-right)" 
+        stroke-width="46" 
+        stroke-linecap="round" 
+        stroke-linejoin="round" />
+
+  <!-- Synaptic Data Link Bridges -->
+  <path d="M156 216L214 238" stroke="#10B981" stroke-width="12" stroke-linecap="round" opacity="0.75" />
+  <path d="M156 296L214 274" stroke="#06B6D4" stroke-width="12" stroke-linecap="round" opacity="0.75" />
+  <path d="M356 216L298 238" stroke="#3B82F6" stroke-width="12" stroke-linecap="round" opacity="0.75" />
+  <path d="M356 296L298 274" stroke="#6366F1" stroke-width="12" stroke-linecap="round" opacity="0.75" />
+
+  <!-- Central AI Neural Spark (Mind) -->
+  <path d="M256 148C256 216 212 256 148 256C212 256 256 296 256 364C256 296 300 256 364 256C300 256 256 216 256 148Z" 
+        fill="url(#mind-spark)" />
+
+  <!-- Inner Sparkle Core -->
+  <circle cx="256" cy="256" r="26" fill="#FFFFFF" />
+  <circle cx="256" cy="256" r="16" fill="#E0F2FE" />
+
+  <!-- Peripheral Neural Nodes -->
+  <circle cx="156" cy="216" r="13" fill="#10B981" />
+  <circle cx="156" cy="296" r="13" fill="#06B6D4" />
+  <circle cx="356" cy="216" r="13" fill="#3B82F6" />
+  <circle cx="356" cy="296" r="13" fill="#6366F1" />
+</svg>

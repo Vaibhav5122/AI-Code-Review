@@ -36,17 +36,17 @@ export function DashboardSidebar({
               tooltip="DiffMind"
               render={
                 <Link href={DASHBOARD_ROUTES.overview}>
-                  <span className="flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-none bg-sidebar">
+                  <span className="flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-primary/10 border border-primary/20">
                     <Image
                       src="/logo2.svg"
                       alt="DiffMind"
-                      width={62}
-                      height={62}
-                      className="text-foreground  brightness-0 dark:invert"
+                      width={24}
+                      height={24}
+                      className="size-6 object-contain"
                     />
                   </span>
                   <span className="grid flex-1 text-left leading-tight group-data-[collapsible=icon]:hidden">
-                    <span className="truncate font-medium">
+                    <span className="truncate font-semibold text-foreground">
                       DiffMind
                     </span>
                   </span>

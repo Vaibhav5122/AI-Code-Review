@@ -24,9 +24,9 @@ export function LandingNavbar() {
             <Image
               src="/logo2.svg"
               alt="DiffMind"
-              width={22}
-              height={22}
-              className="text-foreground brightness-0 dark:invert"
+              width={26}
+              height={26}
+              className="size-6 object-contain"
             />
           </div>
           <div className="flex flex-col">

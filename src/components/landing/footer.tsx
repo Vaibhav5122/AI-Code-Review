@@ -13,9 +13,9 @@ export function LandingFooter() {
               <Image
                 src="/logo2.svg"
                 alt="DiffMind"
-                width={18}
-                height={18}
-                className="text-foreground brightness-0 dark:invert"
+                width={20}
+                height={20}
+                className="size-5 object-contain"
               />
             </div>
             <div>

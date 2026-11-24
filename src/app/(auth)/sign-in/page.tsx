@@ -25,14 +25,16 @@ const SignInPage = async ({ searchParams }: SignInPageProps) => {
     <Card className="border-border/80 shadow-sm">
       <CardHeader className="items-center text-center">
         <div className="mb-6 justify-center flex pt-2">
-          <Image
-            src={"/logo2.svg"}
-            alt="DiffMind"
-            width={40}
-            height={40}
-            priority
-            className="text-foreground  brightness-0 dark:invert"
-          />
+          <div className="flex size-14 items-center justify-center rounded-2xl bg-primary/10 border border-primary/20 shadow-sm">
+            <Image
+              src={"/logo2.svg"}
+              alt="DiffMind"
+              width={38}
+              height={38}
+              priority
+              className="size-9 object-contain"
+            />
+          </div>
         </div>
         <CardTitle className="text-base">Welcome back</CardTitle>
         <CardDescription>
