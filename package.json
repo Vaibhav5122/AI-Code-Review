@@ -1,12 +1,14 @@
 {
-  "name": "ai-code-reviewer",
+  "name": "diffmind",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "inngest:dev": "npx inngest-cli dev -u http://localhost:3000/api/inngest",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",

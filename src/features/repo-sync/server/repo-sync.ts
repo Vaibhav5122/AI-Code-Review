@@ -235,8 +235,21 @@ export async function triggerRepoSync(
     update: { installationId, branch, status: "pending" },
   });
 
-  await inngest.send({
-    name: "repo/sync.requested",
-    data: { repoSyncId: repoSync.id },
-  });
+  try {
+    await inngest.send({
+      name: "repo/sync.requested",
+      data: { repoSyncId: repoSync.id },
+    });
+  } catch (error: any) {
+    if (
+      error?.code === "ECONNREFUSED" ||
+      error?.cause?.code === "ECONNREFUSED" ||
+      error?.message?.includes("fetch failed")
+    ) {
+      throw new Error(
+        "Inngest dev server is not running. Please start it with: npx inngest-cli dev -u http://localhost:3000/api/inngest",
+      );
+    }
+    throw error;
+  }
 }

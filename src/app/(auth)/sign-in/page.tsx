@@ -27,7 +27,7 @@ const SignInPage = async ({ searchParams }: SignInPageProps) => {
         <div className="mb-6 justify-center flex pt-2">
           <Image
             src={"/logo2.svg"}
-            alt="AI Code Reviewer"
+            alt="DiffMind"
             width={40}
             height={40}
             priority

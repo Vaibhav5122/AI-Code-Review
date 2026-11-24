@@ -151,7 +151,7 @@ export function GithubConnectCard({
               <div>
                 <CardTitle>Github App</CardTitle>
                 <CardDescription>
-                  Install the AI Code Reviewer app in your GitHub account or
+                  Install the DiffMind app in your GitHub account or
                   organization to access public and private repositories
                 </CardDescription>
               </div>

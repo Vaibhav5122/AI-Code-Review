@@ -33,13 +33,13 @@ export function DashboardSidebar({
           <SidebarMenuItem>
             <SidebarMenuButton
               size="lg"
-              tooltip="ChaiCodeAIReview"
+              tooltip="DiffMind"
               render={
                 <Link href={DASHBOARD_ROUTES.overview}>
                   <span className="flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-none bg-sidebar">
                     <Image
                       src="/logo2.svg"
-                      alt="AI Code Reviewer"
+                      alt="DiffMind"
                       width={62}
                       height={62}
                       className="text-foreground  brightness-0 dark:invert"
@@ -47,7 +47,7 @@ export function DashboardSidebar({
                   </span>
                   <span className="grid flex-1 text-left leading-tight group-data-[collapsible=icon]:hidden">
                     <span className="truncate font-medium">
-                      ChaiCodeAIReview
+                      DiffMind
                     </span>
                   </span>
                 </Link>

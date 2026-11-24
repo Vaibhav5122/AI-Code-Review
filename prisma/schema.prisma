@@ -18,15 +18,15 @@ model Test {
 }
 
 model User {
-  id            String    @id
-  name          String
-  email         String
-  emailVerified Boolean   @default(false)
-  image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  sessions      Session[]
-  accounts      Account[]
+  id                 String              @id
+  name               String
+  email              String
+  emailVerified      Boolean             @default(false)
+  image              String?
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  sessions           Session[]
+  accounts           Account[]
   githubInstallation GithubInstallation?
 
   @@unique([email])
@@ -48,36 +48,36 @@ model GithubInstallation {
 }
 
 model PullRequest {
-  id              String   @id @default(cuid())
-  installationId  Int      
-  repoFullName    String
-  prNumber        Int
-  title           String
-  authorLogin     String?
-  headSha         String
-  baseBranch      String
-  status          String
-  reviewComment   String?
-  reviewedAt      DateTime?
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  id             String    @id @default(cuid())
+  installationId Int
+  repoFullName   String
+  prNumber       Int
+  title          String
+  authorLogin    String?
+  headSha        String
+  baseBranch     String
+  status         String
+  reviewComment  String?
+  reviewedAt     DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
 
   @@unique([repoFullName, prNumber])
   @@map("pull_request")
 }
 
-model RepoSync{
-  id            String   @id @default(cuid())
+model RepoSync {
+  id             String    @id @default(cuid())
   installationId Int
-  repoFullName    String 
-  branch        String
-  status       String @default("pending")
-  chunkCount   Int? @default(0)
-  syncedAt     DateTime?
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  repoFullName   String
+  branch         String
+  status         String    @default("pending")
+  chunkCount     Int?      @default(0)
+  syncedAt       DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
 
-  @@unique([ repoFullName])
+  @@unique([repoFullName])
   @@map("repo_sync")
 }
 
@@ -99,6 +99,7 @@ model Session {
 
 model Account {
   id                    String    @id
+  issuer                String?
   accountId             String
   providerId            String
   userId                String

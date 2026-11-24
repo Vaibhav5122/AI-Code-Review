@@ -49,12 +49,19 @@ export async function handleGithubWebhook(request: Request) {
   const pullRequest = await savePullRequest(event);
 
   if (pullRequest) {
-    await inngest.send({
-      name: "github/pr.received",
-      data: {
-        pullRequestId: pullRequest.id,
-      },
-    });
+    try {
+      await inngest.send({
+        name: "github/pr.received",
+        data: {
+          pullRequestId: pullRequest.id,
+        },
+      });
+    } catch (error) {
+      console.error(
+        "Failed to send inngest event github/pr.received (is inngest dev server running?):",
+        error,
+      );
+    }
   }
 
   return Response.json({ received: true });

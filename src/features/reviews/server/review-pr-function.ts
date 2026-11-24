@@ -91,11 +91,12 @@ export const reviewPullRequest = inngest.createFunction(
     });
 
     await step.run("post-pr-comment", async () => {
+      const formattedReview = `${review}\n\n---\n*Automated review powered by [DiffMind](https://diffmind.vbxv.me)*`;
       await postPrComment(
         pullRequest.installationId,
         pullRequest.repoFullName,
         pullRequest.prNumber,
-        review,
+        formattedReview,
       );
     });
 
